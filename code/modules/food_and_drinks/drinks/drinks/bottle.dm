@@ -296,6 +296,69 @@
 	isGlass = 0
 	list_reagents = list("milk" = 100)
 
+/obj/item/reagent_containers/food/drinks/bottle/raspberryjuice
+	name = "raspberry juice"
+	desc = "Sweet but tangy."
+	icon_state = "raspberryjuice"
+	item_state = "carton"
+	throwforce = 0
+	isGlass = 0
+	list_reagents = list("raspberryjuice" = 100)
+
+/obj/item/reagent_containers/food/drinks/bottle/pearjuice
+	name = "pear juice"
+	desc = "Mild and pleasant."
+	icon_state = "pearjuice"
+	item_state = "carton"
+	throwforce = 0
+	isGlass = 0
+	list_reagents = list("pearjuice" = 100)
+
+/obj/item/reagent_containers/food/drinks/bottle/peachjuice
+	name = "peach juice"
+	desc = "Sweet and tasty!"
+	icon_state = "peachjuice"
+	item_state = "carton"
+	throwforce = 0
+	isGlass = 0
+	list_reagents = list("peachjuice" = 100)
+
+/obj/item/reagent_containers/food/drinks/bottle/mangojuice
+	name = "mango juice"
+	desc = "Undeniably tropical."
+	icon_state = "mangojuice"
+	item_state = "carton"
+	throwforce = 0
+	isGlass = 0
+	list_reagents = list("mangojuice" = 100)
+
+/obj/item/reagent_containers/food/drinks/bottle/grapefruitjuice
+	name = "grapefruit juice"
+	desc = "Strong and bitter."
+	icon_state = "grapefruitjuice"
+	item_state = "carton"
+	throwforce = 0
+	isGlass = 0
+	list_reagents = list("grapefruitjuice" = 100)
+
+/obj/item/reagent_containers/food/drinks/bottle/grapejuice
+	name = "grape juice"
+	desc = "Not old enough to get drunk on."
+	icon_state = "grapejuice"
+	item_state = "carton"
+	throwforce = 0
+	isGlass = 0
+	list_reagents = list("grapejuice" = 100)
+
+/obj/item/reagent_containers/food/drinks/bottle/cranberryjuice
+	name = "cranberry juice"
+	desc = "Sour. Very sour."
+	icon_state = "cranberryjuice"
+	item_state = "carton"
+	throwforce = 0
+	isGlass = 0
+	list_reagents = list("cranberryjuice" = 100)
+
 ////////////////////////// MOLOTOV ///////////////////////
 /obj/item/reagent_containers/food/drinks/bottle/molotov
 	name = "molotov cocktail"
