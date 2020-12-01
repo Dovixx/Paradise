@@ -55,6 +55,8 @@ GLOBAL_LIST_INIT(all_supply_groups, list(SUPPLY_EMERGENCY,SUPPLY_SECURITY,SUPPLY
 	var/list/announce_beacons = list() // Particular beacons that we'll notify the relevant department when we reach
 	var/special = FALSE //Event/Station Goals/Admin enabled packs
 	var/special_enabled = FALSE
+	/// List of names for being done in TGUI
+	var/list/ui_manifest = list()
 
 
 /datum/supply_packs/New()
@@ -63,7 +65,11 @@ GLOBAL_LIST_INIT(all_supply_groups, list(SUPPLY_EMERGENCY,SUPPLY_SECURITY,SUPPLY
 		if(!path)	continue
 		var/atom/movable/AM = path
 		manifest += "<li>[initial(AM.name)]</li>"
+		// Add the name to the UI manifest
+		ui_manifest += "[initial(AM.name)]"
 	manifest += "</ul>"
+
+
 
 ////// Use the sections to keep things tidy please /Malkevin
 
@@ -1619,6 +1625,13 @@ GLOBAL_LIST_INIT(all_supply_groups, list(SUPPLY_EMERGENCY,SUPPLY_SECURITY,SUPPLY
 	cost = 15
 	containername = "mafia supply crate"
 
+/datum/supply_packs/misc/sunglasses
+	name = "Sunglasses Crate"
+	contains = list(/obj/item/clothing/glasses/sunglasses,
+					/obj/item/clothing/glasses/sunglasses,
+					/obj/item/clothing/glasses/sunglasses)
+	cost = 30
+	containername = "sunglasses crate"
 /datum/supply_packs/misc/randomised
 	var/num_contained = 3 //number of items picked to be contained in a randomised crate
 	contains = list(/obj/item/clothing/head/collectable/chef,
@@ -1795,6 +1808,16 @@ GLOBAL_LIST_INIT(all_supply_groups, list(SUPPLY_EMERGENCY,SUPPLY_SECURITY,SUPPLY
 					/obj/item/circuitboard/computer/bsa_control
 					)
 	containername = "bluespace artillery parts crate"
+
+
+/datum/supply_packs/misc/station_goal/bluespace_tap
+	name = "Bluespace Harvester Parts"
+	cost = 150
+	contains = list(
+					/obj/item/circuitboard/machine/bluespace_tap,
+					/obj/item/paper/bluespace_tap
+					)
+	containername = "bluespace harvester parts crate"
 
 /datum/supply_packs/misc/station_goal/dna_vault
 	name = "DNA Vault Parts"

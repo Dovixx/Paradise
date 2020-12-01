@@ -169,7 +169,16 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 /////////////////////////////////////////////////////////////////////////
 
-/proc/getline(atom/M,atom/N)//Ultra-Fast Bresenham Line-Drawing Algorithm
+/**
+ * Gets the turfs which are between the two given atoms. Including their positions
+ * Only works for atoms on the same Z level which is not 0. So an atom located in a non turf won't work
+ * Arguments:
+ * * M - The source atom
+ * * N - The target atom
+ */
+/proc/getline(atom/M, atom/N)//Ultra-Fast Bresenham Line-Drawing Algorithm
+	if(!M.z || M.z != N.z)	// Same Z level and not 0. Else all below breaks
+		return list()
 	var/px=M.x		//starting x
 	var/py=M.y
 	var/line[] = list(locate(px,py,M.z))
@@ -423,6 +432,18 @@ Turf and target are seperate in case you want to teleport some distance from a t
 	for(var/mob/M in GLOB.mob_list)
 		if(M.ckey == key)
 			return M
+
+/proc/get_client_by_ckey(ckey)
+	if(cmptext(copytext(ckey, 1, 2),"@"))
+		ckey = findStealthKey(ckey)
+	return GLOB.directory[ckey]
+
+
+/proc/findStealthKey(txt)
+	if(txt)
+		for(var/P in GLOB.stealthminID)
+			if(GLOB.stealthminID[P] == txt)
+				return P
 
 // Returns the atom sitting on the turf.
 // For example, using this on a disk, which is in a bag, on a mob, will return the mob because it's on the turf.
@@ -1388,8 +1409,10 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 	see_in_dark = 1e6
 
 /mob/dview/New() //For whatever reason, if this isn't called, then BYOND will throw a type mismatch runtime when attempting to add this to the mobs list. -Fox
+	SHOULD_CALL_PARENT(FALSE)
 
 /mob/dview/Destroy()
+	SHOULD_CALL_PARENT(FALSE)
 	// should never be deleted
 	return QDEL_HINT_LETMELIVE
 
@@ -1997,5 +2020,35 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 		return TRUE
 	return FALSE
 
+/**
+ * Proc which gets all adjacent turfs to `src`, including the turf that `src` is on.
+ *
+ * This is similar to doing `for(var/turf/T in range(1, src))`. However it is slightly more performant.
+ * Additionally, the above proc becomes more costly the more atoms there are nearby. This proc does not care about that.
+ */
+/atom/proc/get_all_adjacent_turfs()
+	var/turf/src_turf = get_turf(src)
+	var/list/_list = list(
+		src_turf,
+		get_step(src_turf, NORTH),
+		get_step(src_turf, NORTHEAST),
+		get_step(src_turf, NORTHWEST),
+		get_step(src_turf, SOUTH),
+		get_step(src_turf, SOUTHEAST),
+		get_step(src_turf, SOUTHWEST),
+		get_step(src_turf, EAST),
+		get_step(src_turf, WEST)
+	)
+	return _list
+
 /// Waits at a line of code until X is true
 #define UNTIL(X) while(!(X)) stoplag()
+
+// Check if the source atom contains another atom
+/atom/proc/contains(atom/location)
+	if(!location)
+		return FALSE
+	if(location == src)
+		return TRUE
+
+	return contains(location.loc)

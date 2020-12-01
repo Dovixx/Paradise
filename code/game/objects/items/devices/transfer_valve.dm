@@ -46,7 +46,7 @@
 				w_class = I.w_class
 
 		update_icon()
-		SSnanoui.update_uis(src) // update all UIs attached to src
+		SStgui.update_uis(src) // update all UIs attached to src
 //TODO: Have this take an assemblyholder
 	else if(isassembly(I))
 		var/obj/item/assembly/A = I
@@ -62,12 +62,14 @@
 		to_chat(user, "<span class='notice'>You attach the [A] to the valve controls and secure it.</span>")
 		A.holder = src
 		A.toggle_secure()	//this calls update_icon(), which calls update_icon() on the holder (i.e. the bomb).
+		if(istype(attached_device, /obj/item/assembly/prox_sensor))
+			AddComponent(/datum/component/proximity_monitor)
 
 		investigate_log("[key_name(user)] attached a [A] to a transfer valve.", INVESTIGATE_BOMB)
 		add_attack_logs(user, src, "attached [A] to a transfer valve", ATKLOG_FEW)
 		log_game("[key_name_admin(user)] attached [A] to a transfer valve.")
 		attacher = user
-		SSnanoui.update_uis(src) // update all UIs attached to src
+		SStgui.update_uis(src) // update all UIs attached to src
 
 
 /obj/item/transfer_valve/HasProximity(atom/movable/AM)
@@ -86,15 +88,15 @@
 		O.hear_message(M, msg)
 
 /obj/item/transfer_valve/attack_self(mob/user)
-	tgui_interact(user)
+	ui_interact(user)
 
-/obj/item/transfer_valve/tgui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = TRUE, datum/tgui/master_ui = null, datum/tgui_state/state = GLOB.tgui_inventory_state)
+/obj/item/transfer_valve/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = TRUE, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.inventory_state)
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "TransferValve",  name, 460, 320, master_ui, state)
 		ui.open()
 
-/obj/item/transfer_valve/tgui_data(mob/user)
+/obj/item/transfer_valve/ui_data(mob/user)
 	var/list/data = list()
 	data["tank_one"] = tank_one ? tank_one.name : null
 	data["tank_two"] = tank_two ? tank_two.name : null
@@ -104,7 +106,7 @@
 
 
 
-/obj/item/transfer_valve/tgui_act(action, params)
+/obj/item/transfer_valve/ui_act(action, params)
 	if(..())
 		return
 	. = TRUE
@@ -137,6 +139,7 @@
 				attached_device.forceMove(get_turf(src))
 				attached_device.holder = null
 				attached_device = null
+				qdel(GetComponent(/datum/component/proximity_monitor))
 				update_icon()
 		else
 			. = FALSE
