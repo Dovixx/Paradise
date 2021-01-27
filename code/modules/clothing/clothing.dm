@@ -204,7 +204,6 @@
 	var/invis_override = 0
 	var/lighting_alpha
 
-	var/emagged = 0
 	var/list/color_view = null//overrides client.color while worn
 	var/prescription = 0
 	var/prescription_upgradable = 0
@@ -212,7 +211,7 @@
 	strip_delay = 20			//	   but seperated to allow items to protect but not impair vision, like space helmets
 	put_on_delay = 25
 	resistance_flags = NONE
-	species_restricted = list("exclude","Kidan")
+
 /*
 SEE_SELF  // can see self, no matter what
 SEE_MOBS  // can see all mobs, no matter what
